@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: zentro
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zentro
+    username: postgres
+    password: kiencuong
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        format_sql: true
+    show-sql: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+
+zentro:
+  jwt:
+    secret: "ZentroDevSecretKey_ChangeMe_AtLeast_32Chars!"
+    issuer: "zentro"
+    access-token-ttl: 2h
+
+  cors:
+    allowed-origins:
+      - http://localhost:5173
