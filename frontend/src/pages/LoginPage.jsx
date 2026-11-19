@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import GoogleLoginButton from '../components/GoogleLoginButton'
 
 export default function LoginPage() {
-  const { user, login, loading } = useAuth()
+  const { user, login, loginWithGoogle, loading } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -87,6 +88,19 @@ export default function LoginPage() {
       <button type="submit" disabled={submitting} className="auth-btn">
         {submitting ? 'Đang xác thực...' : 'Đăng nhập'}
       </button>
+
+      <div className="auth-divider">
+        <span>hoặc</span>
+      </div>
+
+      <GoogleLoginButton
+        onSuccess={async (accessToken) => {
+          setError('')
+          await loginWithGoogle(accessToken)
+          navigate('/', { replace: true })
+        }}
+        onError={(err) => setError(err.message || 'Đăng nhập Google thất bại')}
+      />
     </form>
   )
 }

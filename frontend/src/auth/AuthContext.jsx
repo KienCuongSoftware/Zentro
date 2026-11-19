@@ -1,5 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { fetchMe, login as loginApi, logout as logoutApi, register as registerApi } from '../api/auth'
+import {
+  fetchMe,
+  login as loginApi,
+  loginWithGoogle as loginWithGoogleApi,
+  logout as logoutApi,
+  register as registerApi,
+} from '../api/auth'
 import { getToken } from '../api/client'
 
 const AuthContext = createContext(null)
@@ -36,13 +42,19 @@ export function AuthProvider({ children }) {
     return data
   }
 
+  async function loginWithGoogle(accessToken) {
+    const data = await loginWithGoogleApi(accessToken)
+    setUser(data.user)
+    return data
+  }
+
   function logout() {
     logoutApi()
     setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, register, login, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   )

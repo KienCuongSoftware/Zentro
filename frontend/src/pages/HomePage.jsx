@@ -60,15 +60,29 @@ export default function HomePage() {
           </p>
 
           {user ? (
-            <div className="mt-8 max-w-md border border-[var(--line)] bg-white p-5">
-              <p className="font-mono-label text-[11px] tracking-[0.16em] text-[var(--ink-soft)] uppercase">
-                Signed in
-              </p>
-              <p className="mt-2 text-lg font-semibold">{user.fullName}</p>
-              <p className="mt-1 text-sm text-[var(--ink-soft)]">{user.email}</p>
-              <p className="mt-3 font-mono-label text-[11px] text-[var(--accent-deep)]">
-                {user.roles?.join(' · ')}
-              </p>
+            <div className="mt-8 flex max-w-md items-center gap-4 border border-[var(--line)] bg-white p-5">
+              {user.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt={user.fullName}
+                  referrerPolicy="no-referrer"
+                  className="h-14 w-14 rounded-full object-cover border border-[var(--line)]"
+                />
+              ) : (
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--paper)] text-lg font-semibold">
+                  {user.fullName?.[0]?.toUpperCase() || 'U'}
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="font-mono-label text-[11px] tracking-[0.16em] text-[var(--ink-soft)] uppercase">
+                  Signed in
+                </p>
+                <p className="mt-1 truncate text-lg font-semibold">{user.fullName}</p>
+                <p className="mt-0.5 truncate text-sm text-[var(--ink-soft)]">{user.email}</p>
+                <p className="mt-2 font-mono-label text-[11px] text-[var(--accent-deep)]">
+                  {user.roles?.join(' · ')}
+                </p>
+              </div>
             </div>
           ) : (
             <div className="mt-8 flex flex-wrap gap-3">
@@ -95,6 +109,7 @@ export default function HomePage() {
           <ul className="mt-5 space-y-3">
             {[
               ['Done', 'Auth JWT + Login/Register'],
+              ['Done', 'Google OAuth login'],
               ['Next', 'Catalog sản phẩm'],
               ['Soon', 'Cart & Checkout'],
             ].map(([state, label]) => (

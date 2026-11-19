@@ -18,6 +18,15 @@ export async function login(payload) {
   return data
 }
 
+export async function loginWithGoogle(accessToken) {
+  const data = await apiRequest('/api/auth/google', {
+    method: 'POST',
+    body: JSON.stringify({ accessToken }),
+  })
+  setToken(data.accessToken)
+  return data
+}
+
 export async function fetchMe() {
   return apiRequest('/api/auth/me')
 }
