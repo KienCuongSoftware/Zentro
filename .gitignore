@@ -8,7 +8,9 @@ Thumbs.db
 # Secrets — never commit
 .env
 .env.*
+!**/.env.example
 !.env.example
+**/.env
 **/application-local.yaml
 **/application-local.yml
 **/secrets.yaml

@@ -32,6 +32,7 @@ Zentro/
 
 - [x] User register / login
 - [x] JWT access tokens
+- [x] Google OAuth login (name + avatar)
 - [x] Role-based accounts (`ROLE_USER`, `ROLE_ADMIN`)
 - [x] Demo user seeding on startup
 - [ ] Product catalog
@@ -85,6 +86,14 @@ You can also set environment variables instead:
 - `GOOGLE_CLIENT_SECRET`
 - `GOOGLE_REDIRECT_URI` (default: `http://localhost:8080/login/oauth2/code/google`)
 
+Frontend also needs the public Client ID (gitignored):
+
+```bash
+cd frontend
+cp .env.example .env
+# set VITE_GOOGLE_CLIENT_ID=...
+```
+
 ### 2. Backend
 
 ```bash
@@ -121,6 +130,7 @@ Seeded automatically when missing:
 | --- | --- | --- |
 | `POST` | `/api/auth/register` | Create account |
 | `POST` | `/api/auth/login` | Login, receive JWT |
+| `POST` | `/api/auth/google` | Login with Google access token |
 | `GET` | `/api/auth/me` | Current user (Bearer token) |
 
 ## Scripts
