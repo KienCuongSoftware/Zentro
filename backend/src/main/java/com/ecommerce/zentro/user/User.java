@@ -2,6 +2,8 @@ package com.ecommerce.zentro.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +35,7 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(name = "password_hash", nullable = false)
+	@Column(name = "password_hash")
 	private String passwordHash;
 
 	@Column(name = "full_name", nullable = false, length = 150)
@@ -41,6 +43,16 @@ public class User {
 
 	@Column(length = 20)
 	private String phone;
+
+	@Column(name = "avatar_url", length = 500)
+	private String avatarUrl;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "auth_provider", nullable = false, length = 20)
+	private AuthProvider authProvider = AuthProvider.LOCAL;
+
+	@Column(name = "google_sub", unique = true, length = 255)
+	private String googleSub;
 
 	@Column(nullable = false)
 	private boolean enabled = true;

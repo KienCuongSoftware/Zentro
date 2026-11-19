@@ -8,6 +8,7 @@ public record UserResponse(
 		String email,
 		String fullName,
 		String phone,
+		String avatarUrl,
 		List<String> roles
 ) {
 
@@ -22,6 +23,7 @@ public record UserResponse(
 				user.getEmail(),
 				user.getFullName(),
 				user.getPhone(),
+				user.getAvatarUrl(),
 				roles
 		);
 	}

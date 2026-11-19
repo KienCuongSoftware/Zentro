@@ -1,5 +1,6 @@
 package com.ecommerce.zentro.config;
 
+import com.ecommerce.zentro.user.AuthProvider;
 import com.ecommerce.zentro.user.Role;
 import com.ecommerce.zentro.user.RoleRepository;
 import com.ecommerce.zentro.user.User;
@@ -58,6 +59,7 @@ public class DemoUserSeeder implements ApplicationRunner {
 		user.setPhone(phone);
 		user.setPasswordHash(passwordEncoder.encode(rawPassword));
 		user.setEnabled(true);
+		user.setAuthProvider(AuthProvider.LOCAL);
 		user.setRoles(roles);
 		userRepository.save(user);
 

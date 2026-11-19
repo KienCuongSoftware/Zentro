@@ -40,7 +40,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return user.getPasswordHash();
+		return user.getPasswordHash() == null ? "" : user.getPasswordHash();
 	}
 
 	@Override

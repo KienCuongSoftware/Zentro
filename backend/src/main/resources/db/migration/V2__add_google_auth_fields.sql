@@ -1,0 +1,10 @@
+ALTER TABLE users
+    ALTER COLUMN password_hash DROP NOT NULL;
+
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS avatar_url VARCHAR(500),
+    ADD COLUMN IF NOT EXISTS auth_provider VARCHAR(20) NOT NULL DEFAULT 'LOCAL',
+    ADD COLUMN IF NOT EXISTS google_sub VARCHAR(255);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_users_google_sub ON users (google_sub)
+    WHERE google_sub IS NOT NULL;

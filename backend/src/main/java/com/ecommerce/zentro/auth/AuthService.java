@@ -6,6 +6,7 @@ import com.ecommerce.zentro.auth.dto.RegisterRequest;
 import com.ecommerce.zentro.auth.dto.UserResponse;
 import com.ecommerce.zentro.common.ApiException;
 import com.ecommerce.zentro.security.UserPrincipal;
+import com.ecommerce.zentro.user.AuthProvider;
 import com.ecommerce.zentro.user.Role;
 import com.ecommerce.zentro.user.RoleRepository;
 import com.ecommerce.zentro.user.User;
@@ -47,6 +48,7 @@ public class AuthService {
 		user.setFullName(request.fullName().trim());
 		user.setPhone(blankToNull(request.phone()));
 		user.setEnabled(true);
+		user.setAuthProvider(AuthProvider.LOCAL);
 		user.setRoles(Set.of(userRole));
 
 		User saved = userRepository.save(user);

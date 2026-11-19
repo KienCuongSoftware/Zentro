@@ -1,6 +1,7 @@
 package com.ecommerce.zentro.auth;
 
 import com.ecommerce.zentro.auth.dto.AuthResponse;
+import com.ecommerce.zentro.auth.dto.GoogleLoginRequest;
 import com.ecommerce.zentro.auth.dto.LoginRequest;
 import com.ecommerce.zentro.auth.dto.RegisterRequest;
 import com.ecommerce.zentro.auth.dto.UserResponse;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 	private final AuthService authService;
+	private final GoogleAuthService googleAuthService;
 
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -32,6 +34,11 @@ public class AuthController {
 	@PostMapping("/login")
 	public AuthResponse login(@Valid @RequestBody LoginRequest request) {
 		return authService.login(request);
+	}
+
+	@PostMapping("/google")
+	public AuthResponse google(@Valid @RequestBody GoogleLoginRequest request) {
+		return googleAuthService.loginWithGoogle(request.accessToken());
 	}
 
 	@GetMapping("/me")
