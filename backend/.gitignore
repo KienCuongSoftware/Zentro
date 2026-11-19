@@ -4,6 +4,18 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Secrets (do not commit) ###
+.env
+.env.*
+!.env.example
+src/main/resources/application-local.yaml
+src/main/resources/application-local.yml
+src/main/resources/secrets.yaml
+src/main/resources/secrets.yml
+**/client_secret*.json
+**/credentials.json
+
+
 ### STS ###
 .apt_generated
 .classpath

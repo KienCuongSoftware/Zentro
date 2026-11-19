@@ -1,0 +1,8 @@
+# Copy to application-local.yaml and fill in real values.
+# application-local.yaml is gitignored.
+zentro:
+  oauth:
+    google:
+      client-id: your-google-client-id.apps.googleusercontent.com
+      client-secret: your-google-client-secret
+      redirect-uri: http://localhost:8080/login/oauth2/code/google

@@ -68,6 +68,23 @@ zentro:
     secret: "change-me-to-a-long-random-secret"
 ```
 
+### Google OAuth secrets (local only)
+
+Copy the example file and fill in your Google Client ID / Secret:
+
+```bash
+cd backend/src/main/resources
+cp application-local.yaml.example application-local.yaml
+```
+
+`application-local.yaml` is **gitignored** — never commit real keys.
+
+You can also set environment variables instead:
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `GOOGLE_REDIRECT_URI` (default: `http://localhost:8080/login/oauth2/code/google`)
+
 ### 2. Backend
 
 ```bash
