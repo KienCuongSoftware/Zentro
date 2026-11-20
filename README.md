@@ -35,7 +35,10 @@ Zentro/
 - [x] Google OAuth login (name + avatar)
 - [x] Role-based accounts (`ROLE_USER`, `ROLE_ADMIN`)
 - [x] Demo user seeding on startup
-- [ ] Product catalog
+- [x] Category mega menu (database-backed)
+- [x] Admin dashboard + user management
+- [x] Admin product management
+- [ ] Storefront product catalog
 - [ ] Cart & checkout
 - [ ] Order tracking
 
@@ -121,8 +124,8 @@ Seeded automatically when missing:
 
 | Role | Email | Password |
 | --- | --- | --- |
-| Admin | `admin@zentro.local` | `Admin@123` |
-| Customer | `customer@zentro.local` | `Customer@123` |
+| Admin (`ROLE_ADMIN` only) | `admin@zentro.local` | `Admin@123` |
+| Customer (`ROLE_USER` only) | `customer@zentro.local` | `Customer@123` |
 
 ## Main API routes
 
@@ -132,6 +135,12 @@ Seeded automatically when missing:
 | `POST` | `/api/auth/login` | Login, receive JWT |
 | `POST` | `/api/auth/google` | Login with Google access token |
 | `GET` | `/api/auth/me` | Current user (Bearer token) |
+| `GET` | `/api/categories/menu` | Category mega menu tree |
+| `GET` | `/api/admin/users` | Admin: list/search users |
+| `PATCH` | `/api/admin/users/{id}/enabled` | Admin: lock/unlock user |
+| `GET/POST` | `/api/admin/products` | Admin: list/create products (stock theo tỉnh) |
+| `PUT/PATCH/DELETE` | `/api/admin/products/{id}` | Admin: update/hide/delete product |
+| `GET` | `/api/admin/provinces` | Admin: danh sách 34 tỉnh/thành (sau sắp xếp 2025) |
 
 ## Scripts
 
