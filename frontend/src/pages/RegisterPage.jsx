@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import { getHomePathForUser } from '../auth/roles'
 import GoogleLoginButton from '../components/GoogleLoginButton'
 
 export default function RegisterPage() {
@@ -25,7 +26,7 @@ export default function RegisterPage() {
   }
 
   if (user) {
-    return <Navigate to="/" replace />
+    return <Navigate to={getHomePathForUser(user)} replace />
   }
 
   function updateField(field) {
@@ -48,12 +49,12 @@ export default function RegisterPage() {
 
     setSubmitting(true)
     try {
-      await register({
+      const data = await register({
         fullName: form.fullName,
         email: form.email,
         password: form.password,
       })
-      navigate('/', { replace: true })
+      navigate(getHomePathForUser(data.user), { replace: true })
     } catch (err) {
       setError(err.message || 'Đăng ký thất bại')
     } finally {
@@ -150,8 +151,8 @@ export default function RegisterPage() {
       <GoogleLoginButton
         onSuccess={async (accessToken) => {
           setError('')
-          await loginWithGoogle(accessToken)
-          navigate('/', { replace: true })
+          const data = await loginWithGoogle(accessToken)
+          navigate(getHomePathForUser(data.user), { replace: true })
         }}
         onError={(err) => setError(err.message || 'Đăng ký Google thất bại')}
       />

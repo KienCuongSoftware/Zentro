@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
+import { getHomePathForUser } from '../auth/roles'
 import GoogleLoginButton from '../components/GoogleLoginButton'
 
 export default function LoginPage() {
@@ -21,7 +22,7 @@ export default function LoginPage() {
   }
 
   if (user) {
-    return <Navigate to="/" replace />
+    return <Navigate to={getHomePathForUser(user)} replace />
   }
 
   async function handleSubmit(event) {
@@ -29,8 +30,8 @@ export default function LoginPage() {
     setError('')
     setSubmitting(true)
     try {
-      await login({ email, password })
-      navigate('/', { replace: true })
+      const data = await login({ email, password })
+      navigate(getHomePathForUser(data.user), { replace: true })
     } catch (err) {
       setError(err.message || 'Đăng nhập thất bại')
     } finally {
@@ -96,8 +97,8 @@ export default function LoginPage() {
       <GoogleLoginButton
         onSuccess={async (accessToken) => {
           setError('')
-          await loginWithGoogle(accessToken)
-          navigate('/', { replace: true })
+          const data = await loginWithGoogle(accessToken)
+          navigate(getHomePathForUser(data.user), { replace: true })
         }}
         onError={(err) => setError(err.message || 'Đăng nhập Google thất bại')}
       />

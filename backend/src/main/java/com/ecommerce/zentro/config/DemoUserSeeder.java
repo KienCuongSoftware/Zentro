@@ -5,6 +5,7 @@ import com.ecommerce.zentro.user.Role;
 import com.ecommerce.zentro.user.RoleRepository;
 import com.ecommerce.zentro.user.User;
 import com.ecommerce.zentro.user.UserRepository;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class DemoUserSeeder implements ApplicationRunner {
 				"Admin Zentro",
 				"0901000001",
 				"Admin@123",
-				Set.of(adminRole, userRole)
+				adminRole
 		);
 
 		ensureUser(
@@ -44,11 +45,13 @@ public class DemoUserSeeder implements ApplicationRunner {
 				"Khách Hàng Demo",
 				"0901000002",
 				"Customer@123",
-				Set.of(userRole)
+				userRole
 		);
+
+		normalizeSingleRolePerUser(userRole, adminRole);
 	}
 
-	private void ensureUser(String email, String fullName, String phone, String rawPassword, Set<Role> roles) {
+	private void ensureUser(String email, String fullName, String phone, String rawPassword, Role role) {
 		if (userRepository.existsByEmailIgnoreCase(email)) {
 			return;
 		}
@@ -60,9 +63,36 @@ public class DemoUserSeeder implements ApplicationRunner {
 		user.setPasswordHash(passwordEncoder.encode(rawPassword));
 		user.setEnabled(true);
 		user.setAuthProvider(AuthProvider.LOCAL);
-		user.setRoles(roles);
+		user.setRoles(mutableRoles(role));
 		userRepository.save(user);
 
 		log.info("Seeded demo account: {}", email);
+	}
+
+	/**
+	 * One account = one role. Admin must not also keep ROLE_USER.
+	 */
+	private void normalizeSingleRolePerUser(Role userRole, Role adminRole) {
+		for (User user : userRepository.findAll()) {
+			boolean hasAdmin = user.getRoles().stream()
+					.anyMatch(role -> "ROLE_ADMIN".equals(role.getName()));
+			Role expectedRole = hasAdmin ? adminRole : userRole;
+
+			boolean alreadySingleExpected = user.getRoles().size() == 1
+					&& user.getRoles().contains(expectedRole);
+
+			if (!alreadySingleExpected) {
+				user.getRoles().clear();
+				user.getRoles().add(expectedRole);
+				userRepository.save(user);
+				log.info("Normalized roles for {}: {}", user.getEmail(), hasAdmin ? "ADMIN" : "USER");
+			}
+		}
+	}
+
+	private static Set<Role> mutableRoles(Role role) {
+		Set<Role> roles = new HashSet<>();
+		roles.add(role);
+		return roles;
 	}
 }

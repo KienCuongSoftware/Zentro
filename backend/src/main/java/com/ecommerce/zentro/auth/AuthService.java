@@ -11,6 +11,7 @@ import com.ecommerce.zentro.user.Role;
 import com.ecommerce.zentro.user.RoleRepository;
 import com.ecommerce.zentro.user.User;
 import com.ecommerce.zentro.user.UserRepository;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,9 @@ public class AuthService {
 		user.setPhone(blankToNull(request.phone()));
 		user.setEnabled(true);
 		user.setAuthProvider(AuthProvider.LOCAL);
-		user.setRoles(Set.of(userRole));
+		Set<Role> roles = new HashSet<>();
+		roles.add(userRole);
+		user.setRoles(roles);
 
 		User saved = userRepository.save(user);
 

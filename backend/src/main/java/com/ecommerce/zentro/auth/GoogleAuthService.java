@@ -10,6 +10,7 @@ import com.ecommerce.zentro.user.Role;
 import com.ecommerce.zentro.user.RoleRepository;
 import com.ecommerce.zentro.user.User;
 import com.ecommerce.zentro.user.UserRepository;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,9 @@ public class GoogleAuthService {
 		if (isNew) {
 			Role userRole = roleRepository.findByName(ROLE_USER)
 					.orElseThrow(() -> new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Default role is missing"));
-			user.setRoles(Set.of(userRole));
+			Set<Role> roles = new HashSet<>();
+			roles.add(userRole);
+			user.setRoles(roles);
 			user.setEnabled(true);
 			user.setAuthProvider(AuthProvider.GOOGLE);
 		}
